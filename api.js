@@ -89,3 +89,50 @@ async function loadNotes() {
 
 // ---------- 5. Events ----------
 loadBtn.addEventListener("click", loadNotes);
+
+// ---------- 6. POST: create a note ----------
+const form = document.querySelector("#note-form");
+const titleInput = document.querySelector("#title-input");
+const bodyInput = document.querySelector("#body-input");
+const submitBtn = document.querySelector("#submit-btn");
+
+async function createNote(event) {
+  event.preventDefault();
+
+  const title = titleInput.value.trim();
+  const body = bodyInput.value.trim();
+
+  // Validation: title required, maximum 100 characters, body optional
+  if (title === "") {
+    setStatus("Please enter a title.", "error");
+    return;
+  }
+  if (title.length > 100) {
+    setStatus("Title must be 100 characters or fewer.", "error");
+    return;
+  }
+
+  submitBtn.disabled = true;
+  setStatus("Creating note...", "info");
+
+  try {
+    const { data, status } = await request(API_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ title: title, body: body, userId: 1 }),
+    });
+
+    removeEmptyState();
+    list.prepend(createNoteItem(data)); // newest note goes to the top
+    setStatus(`Note created (status ${status}, id ${data.id}).`, "success");
+    form.reset();
+    titleInput.focus();
+  } catch (error) {
+    setStatus("Could not create the note. Please try again.", "error");
+    console.error("Create failed:", error);
+  } finally {
+    submitBtn.disabled = false;
+  }
+}
+
+form.addEventListener("submit", createNote);
