@@ -40,7 +40,7 @@ function createNoteItem(note) {
   content.appendChild(body);
   li.appendChild(content);
 
-  // (delete button is added in Task 3)
+  addDeleteButton(li, note);
   return li;
 }
 
@@ -136,3 +136,40 @@ async function createNote(event) {
 }
 
 form.addEventListener("submit", createNote);
+
+// ---------- 7. DELETE: remove a note ----------
+function addDeleteButton(li, note) {
+  const del = document.createElement("button");
+  del.type = "button";
+  del.textContent = "Delete";
+  del.classList.add("delete-btn");
+  del.addEventListener("click", () => deleteNote(li, note, del));
+  li.appendChild(del);
+}
+
+// NOTE ABOUT THE PRACTICE API: JSONPlaceholder does not really store
+// anything. Notes we create always come back with id 101 and are never
+// saved, and a DELETE is accepted but changes nothing on the server.
+// So our approach is: send the real DELETE request, and if the server
+// answers with a 2xx status, remove that note from the page. We remove
+// the exact <li> we were given (not "the note with this id") because
+// every note we create has the same id, 101. Clicking "Load notes"
+// again brings back the original 10 server notes. With a real backend,
+// the same code would work and the deletion would be permanent.
+async function deleteNote(li, note, button) {
+  button.disabled = true;
+  setStatus(`Deleting note ${note.id}...`, "info");
+
+  try {
+    const { status } = await request(`${API_URL}/${note.id}`, {
+      method: "DELETE",
+    });
+    li.remove();
+    showEmptyIfNeeded();
+    setStatus(`Note deleted (status ${status}).`, "success");
+  } catch (error) {
+    setStatus("Could not delete the note. Please try again.", "error");
+    console.error("Delete failed:", error);
+    button.disabled = false; // let the user try again
+  }
+}
