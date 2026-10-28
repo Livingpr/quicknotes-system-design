@@ -1,0 +1,157 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+  background-color: #f4f6f8;
+  color: #222;
+  line-height: 1.5;
+}
+
+header {
+  background-color: #8e0000;
+  color: white;
+  text-align: center;
+  padding: 24px 16px;
+}
+
+header h1 {
+  margin: 0;
+}
+
+header p {
+  margin: 4px 0 0;
+}
+
+main {
+  max-width: 700px;
+  margin: 24px auto;
+  padding: 0 16px;
+}
+
+section {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Status messages */
+#status {
+  min-height: 3em;
+  padding: 10px 14px;
+  border-radius: 6px;
+  border-left: 5px solid transparent;
+}
+
+#status.info {
+  background-color: #e8f0fe;
+  border-left-color: #1a73e8;
+  color: #174ea6;
+}
+
+#status.success {
+  background-color: #e6f4ea;
+  border-left-color: #188038;
+  color: #0d652d;
+}
+
+#status.error {
+  background-color: #fce8e6;
+  border-left-color: #d93025;
+  color: #a50e0e;
+  font-weight: bold;
+}
+
+/* Form */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+label {
+  font-weight: bold;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font: inherit;
+}
+
+button {
+  background-color: #0ba184;
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button:hover:not(:disabled) {
+  background-color: #088a70;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Notes list */
+#notes-list {
+  list-style: none;
+  padding: 0;
+  margin: 16px 0 0;
+}
+
+.note {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  background-color: #fffbe6;
+  border-left: 5px solid #0ba184;
+  padding: 12px 16px;
+  margin-bottom: 10px;
+  border-radius: 6px;
+}
+
+.note-content p {
+  margin: 4px 0 0;
+}
+
+.note-content p:empty {
+  display: none;
+}
+
+.empty {
+  color: #777;
+  font-style: italic;
+}
+
+.delete-btn {
+  background-color: #8e0000;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+}
+
+.delete-btn:hover:not(:disabled) {
+  background-color: #6b0000;
+}
+
+@media (max-width: 600px) {
+  .note {
+    flex-direction: column;
+  }
+}
